@@ -285,6 +285,7 @@ class gp_install{
 
 		echo '<tbody>';
 
+		$this->CheckDataType();
 		$this->CheckDataFolder();
 		$this->CheckPHPVersion();
 		$this->CheckEnv();
@@ -370,6 +371,31 @@ class gp_install{
 		echo '<td class="'.$class.'">'.$curr.'</td>';
 		echo '<td>'.$expected.'</td>';
 		echo '</tr>';
+	}
+
+	/**
+	 * Check the value of the gp_data_type constant
+	 *
+	 */
+	public function CheckDataType(){
+
+		echo '<tr><td class="nowrap">';
+		echo 'Data Type';
+		echo '</td>';
+
+
+		$data_type		= '.php'; // defaults to php for backwards compat
+		if( defined('gp_data_type') && gp_data_type == '.json' ){
+			$data_type		= '.json';
+			$this->passed	= true;
+
+			// make sure .gpjson can't be accessed
+			$this->StatusRowFormat('passed',$data_type,'.json');
+
+		}else{
+
+			$this->StatusRowFormat('passed_orange',$data_type,'.json');
+		}
 	}
 
 
@@ -1137,15 +1163,3 @@ class gp_install{
 
 
 }//end class
-
-
-
-
-
-
-
-
-
-
-
-

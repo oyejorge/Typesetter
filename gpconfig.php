@@ -3,29 +3,29 @@
 /**
  * $upload_extensions_allow and $upload_extensions_deny
  * Allow or deny the upload of files based on their file extensions
- * The default list of allowed extenstions is 
+ * The default list of allowed extenstions is
  * array( '7z',
- *        'aiff', 'asf', 'avi', 
- *        'bmp', 'bz', 
- *        'css', 'csv', 
- *        'doc', 'docx', 
+ *        'aiff', 'asf', 'avi',
+ *        'bmp', 'bz',
+ *        'css', 'csv',
+ *        'doc', 'docx',
  *        'eot',
- *        'fla', 'flac', 'flv', 
- *        'gif', 'gz', 'gzip', 
- *        'htm', 'html', 
- *        'ico', 
- *        'jpeg', 'jpg', 'js', 'json', 
- *        'less', 
- *        'm4v', 'md, 'mid', 'mov', 'mp3', 'mp4', 'mpc', 'mpeg', 'mpg', 
+ *        'fla', 'flac', 'flv',
+ *        'gif', 'gz', 'gzip',
+ *        'htm', 'html',
+ *        'ico',
+ *        'jpeg', 'jpg', 'js', 'json',
+ *        'less',
+ *        'm4v', 'md, 'mid', 'mov', 'mp3', 'mp4', 'mpc', 'mpeg', 'mpg',
  *        'ods', 'odt', 'ogg', 'oga', 'ogv', 'opus', 'otf',
- *        'pages', 'pdf', 'png', 'ppt', 'pptx', 
- *        'qt', 
- *        'ram', 'rar', 'rm', 'rmi', 'rmvb', 'rtf', 
+ *        'pages', 'pdf', 'png', 'ppt', 'pptx',
+ *        'qt',
+ *        'ram', 'rar', 'rm', 'rmi', 'rmvb', 'rtf',
  *        'scss', 'swf', 'sxc', 'sxw', // 'svg' and 'svgz' can be enabled via Settings -> Configuration
- *        'tar', 'tgz', 'tif', 'tiff', 'ttf', 'txt', 
- *        'vsd', 
+ *        'tar', 'tgz', 'tif', 'tiff', 'ttf', 'txt',
+ *        'vsd',
  *        'wav', 'webmanifest', 'webm', 'wma', 'wmv', 'woff', 'woff2',
- *        'xls', 'xlsx', 'xml', 'xsl' 
+ *        'xls', 'xlsx', 'xml', 'xsl'
  *        'zip',
  * )
  * Note: gp_restrict_uploads has to be set to true for upload_extension settings to have any effect
@@ -34,6 +34,8 @@ define('gp_restrict_uploads',true);
 $upload_extensions_allow = array();
 $upload_extensions_deny = array();
 
+
+//define('gp_data_type','.json');
 
 /**
  * gp_default_theme
@@ -184,7 +186,7 @@ define('gpdebug',false);
 /**
  * gp_prefix_urls
  * Set to true will prefix internal content URLs (href, src, ..., starting with '/')
- * with $LinkPrefix or $dirPrefix variables when saving in order to make the 
+ * with $LinkPrefix or $dirPrefix variables when saving in order to make the
  * content portable across different directory levels and hosts
  * Defaults to false
  */
@@ -195,5 +197,3 @@ define('gp_prefix_urls',false);
  * Include clearfloats in Typesetter generated code
  * define('clear_floats',false); experimental
  */
-
-
