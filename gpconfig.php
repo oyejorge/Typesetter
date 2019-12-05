@@ -35,7 +35,7 @@ $upload_extensions_allow = array();
 $upload_extensions_deny = array();
 
 
-//define('gp_data_type','.json');
+define('gp_data_type','.json');
 
 /**
  * gp_default_theme

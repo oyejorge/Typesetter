@@ -146,9 +146,11 @@ namespace gp\tool{
 				}
 
 				$result = static::GetMethod($method,$url,$args);
+
+				// a result of false can simply mean fopen() failed to create a handle and a request was never made
 				if( $result === false ){
 					static::$debug['FailedMethods'] .= $method.',';
-					return false;
+					continue;
 				}
 
 				static::$debug['Method']	= $method;

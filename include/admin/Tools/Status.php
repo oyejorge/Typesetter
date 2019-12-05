@@ -188,6 +188,46 @@ class Status{
 
 	}
 
+	/**
+	 * Attempt to determine if gpjson files are web accessible
+	 *
+	 * @return mixed null = unknown status, true = gpjson is web accessible, false = gpjson is not accessible
+	 *
+	 */
+	static function VulnerableData(){
+		global $dataDir;
+
+		$schema			= ( isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on' ) ? 'https://' : 'http://';
+		$host			= \gp\tool::ServerName(true);
+		$url			= $schema.$host.\gp\tool::GetDir('include/test.gpjson','',false);
+		$file_path		= $dataDir . '/include/test.gpjson';
+
+
+		$getter			= new \gp\tool\RemoteGet();
+		$result			= $getter->Get($url);
+
+		// no response doesn't necessarily mean it's safe
+		if( !$result ){
+			return null;
+		}
+
+		// vulnerable if we have a successful response
+		$code		= (int)$result['response']['code'];
+		if( $code >= 200 && $code < 300 ){
+			return true;
+		}
+
+		$body 		= $result['body'];
+		$json		= @json_decode($body,true);
+
+		// vulnerable if we have json
+		if( $json ){
+			return true;
+		}
+
+		return false;
+	}
+
+
 
 }
-

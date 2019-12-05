@@ -379,18 +379,27 @@ class gp_install{
 	 */
 	public function CheckDataType(){
 
+
+
 		echo '<tr><td class="nowrap">';
 		echo 'Data Type';
+		echo $url;
 		echo '</td>';
 
 
 		$data_type		= '.php'; // defaults to php for backwards compat
 		if( defined('gp_data_type') && gp_data_type == '.json' ){
-			$data_type		= '.json';
-			$this->passed	= true;
 
-			// make sure .gpjson can't be accessed
-			$this->StatusRowFormat('passed',$data_type,'.json');
+			$data_type			= '.json';
+			$this->passed		= true;
+			$vulnerable_data	= \gp\admin\Tools\Status::VulnerableData(); // make sure .gpjson can't be accessed
+
+
+			if( $vulnerable_data ){
+				$this->StatusRowFormat('passed_orange',$data_type,'.json');
+			}else{
+				$this->StatusRowFormat('passed',$data_type,'.json');
+			}
 
 		}else{
 
