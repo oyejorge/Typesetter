@@ -1430,7 +1430,7 @@ namespace gp\tool{
 			if( !ini_get('display_errors') ){
 				$last_error	= self::LastFatal();
 				if( !empty($last_error) ){
-					self::RecordFatal($last_error);
+					Output\Caller::RecordFatal($last_error);
 					$buffer .= Output\Caller::FatalMessage($last_error);
 				}
 			}
