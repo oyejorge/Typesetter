@@ -262,7 +262,7 @@ namespace gp\tool{
 				$args[0] = $info['value'];
 			}
 
-			$args = \gp\tool\Output::ExecInfo($info,$args);
+			$args = \gp\tool\Output\Caller::ExecInfo($info,$args);
 
 			array_pop( $gp_current_hook );
 			if( isset($args[0]) ){
@@ -442,5 +442,3 @@ namespace{
 	class gpPlugin extends \gp\tool\Plugins{}
 
 }
-
-

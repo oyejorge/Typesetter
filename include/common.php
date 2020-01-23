@@ -542,7 +542,7 @@ function IncludeScript($file, $include_variation = 'include_once', $globals = ar
 	}
 
 	//check for fatal errors
-	if( \gp\tool\Output::FatalNotice( 'include', $file ) ){
+	if( \gp\tool\Output\Caller::FatalNotice( 'include', $file ) ){
 		return false;
 	}
 
@@ -578,7 +578,7 @@ function IncludeScript($file, $include_variation = 'include_once', $globals = ar
 		\showError( E_ERROR ,'IncludeScript() Fatal Error: '.$e->getMessage(), $e->GetFile(), $e->GetLine(), [], $e->getTrace());
 	}
 
-	\gp\tool\Output::PopCatchable();
+	\gp\tool\Output\Caller::PopCatchable();
 
 	return $return;
 }

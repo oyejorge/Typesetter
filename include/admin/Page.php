@@ -253,7 +253,7 @@ class Page extends \gp\Page{
 					$extra_parts	= array_filter($extra_parts);
 					$extra_parts	= array_values($extra_parts);
 
-					\gp\tool\Output::ExecInfo($scriptinfo, array('page'=>$this,'path_parts'=>$extra_parts) );
+					\gp\tool\Output\Caller::ExecInfo($scriptinfo, array('page'=>$this,'path_parts'=>$extra_parts) );
 
 					return;
 				}

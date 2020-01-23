@@ -41,7 +41,7 @@ namespace gp\tool\Output{
 
 			//gadgets may be using gpajax/json request/responses
 			\gp\tool\Output::TemplateSettings();
-			\gp\tool\Output::PrepGadgetContent();
+			\gp\tool\Output\Caller::PrepGadgetContent();
 
 
 			self::Header();
@@ -53,7 +53,7 @@ namespace gp\tool\Output{
 			//output content
 			if( !empty($_REQUEST['gpx_content']) ){
 				self::JsonDo($_REQUEST['gpx_content'], '', $page->contentBuffer);
-				
+
 			}elseif( in_array('#gpx_content', $page->ajaxReplace) ){
 				$replace_id = '#gpx_content';
 

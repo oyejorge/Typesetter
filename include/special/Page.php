@@ -70,7 +70,7 @@ class Page extends \gp\Page{
 
 	public static function ExecInfo($scriptinfo ){
 		ob_start();
-		\gp\tool\Output::ExecInfo($scriptinfo);
+		\gp\tool\Output\Caller::ExecInfo($scriptinfo);
 		return ob_get_clean();
 	}
 
