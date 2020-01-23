@@ -4,26 +4,21 @@ namespace gp\tool\Output;
 
 class Caller{
 
-	private static $gadget_cache		= array();
-	private static $catchable			= array();
+	private static $gadget_cache		= [];
+	private static $catchable			= [];
 
 	public static function ExecArea($info){
-		//retreive from gadget cache if set
-		if( isset($info['gpOutCmd']) ){
-			$gadget = $info['gpOutCmd'];
-			if( substr($gadget, 0, 7) == 'Gadget:' ){
-				$gadget = substr($gadget,7);
-			}
-			if( isset(self::$gadget_cache[$gadget]) ){
-				echo self::$gadget_cache[$gadget];
-				return;
-			}
+
+		// retreive from gadget cache if set
+		if( isset($info['gpOutCmd']) && isset(self::$gadget_cache[$info['gpOutCmd']]) ){
+			echo self::$gadget_cache[$info['gpOutCmd']];
+			return;
 		}
 
-		$info += array('arg' => '');
-		$args = array($info['arg'], $info);
+		$info	+= ['arg' => ''];
+		$args	= [$info['arg'], $info];
+		$info	= \gp\tool\Plugins::Filter('ExecArea', [$info, $args] );
 
-		$info = \gp\tool\Plugins::Filter('ExecArea', array($info, $args));
 		if( !$info ){
 			return;
 		}
@@ -37,31 +32,22 @@ class Caller{
 	 * Execute a set of directives for theme areas, hooks and special pages
 	 *
 	 */
-	public static function ExecInfo($info, $args=array()){
-		global $addonFolderName, $installed_addon, $page;
+	public static function ExecInfo($info, $args=[] ){
+		global $page;
 
-		$args += array('page' => $page);
+		$args += ['page' => $page];
 
-		//addonDir is deprecated as of 2.0b3
+
 		$addon = false;
-		if( isset($info['addonDir']) ){
-			$addon = $info['addonDir'];
-		}elseif( isset($info['addon']) ){
+		if( isset($info['addon']) ){
 			$addon = $info['addon'];
-		}
 
-		if( $addon !== false ){
-			if( gp_safe_mode ){
+			if( \gp_safe_mode ){
 				return $args;
 			}
 			\gp\tool\Plugins::SetDataFolder($addon);
 		}
 
-		//if addon was just installed
-		if( $installed_addon && $installed_addon === $addonFolderName){
-			\gp\tool\Plugins::ClearDataFolder();
-			return $args;
-		}
 
 		// check for fatal errors
 		if( self::FatalNotice('exec', $info) ){
@@ -86,22 +72,21 @@ class Caller{
 
 
 
-	public static function _ExecInfo($info, $args=array()){
+	public static function _ExecInfo($info, $args=[]){
 		global $dataDir, $gp_overwrite_scripts;
 
 		// get data
 		if( !empty($info['data']) ){
-			IncludeScript($dataDir. $info['data'], 'include_if', array('page', 'dataDir', 'langmessage'));
+			IncludeScript($dataDir. $info['data'], 'include_if', ['page', 'dataDir', 'langmessage']);
 		}
 
 		// get script
 		$has_script = false;
 		if( !empty($info['script']) ){
 
+			$full_path = $dataDir . $info['script'];
 			if( is_array($gp_overwrite_scripts) && isset($gp_overwrite_scripts[$info['script']]) ){
 				$full_path = $gp_overwrite_scripts[$info['script']];
-			}else{
-				$full_path = $dataDir . $info['script'];
 			}
 
 			if( !file_exists($full_path) ){
@@ -109,15 +94,18 @@ class Caller{
 				return $args;
 			}
 
-			if( IncludeScript($full_path, 'include_once', array('page', 'dataDir', 'langmessage')) ){
+			if( IncludeScript($full_path, 'include_once', ['page', 'dataDir', 'langmessage']) ){
 				$has_script = true;
 			}
 		}
 
-		//class & method execution
+		// admin class & method execution
 		if( !empty($info['class_admin']) && \gp\tool::LoggedIn() ){
 			return self::ExecClass($has_script, $info['class_admin'], $info, $args);
-		}elseif( !empty($info['class']) ){
+		}
+
+		// class & method execution
+		if( !empty($info['class']) ){
 			return self::ExecClass($has_script, $info['class'], $info, $args);
 		}
 
@@ -146,7 +134,7 @@ class Caller{
 
 		if( !empty($info['method']) ){
 			if( method_exists($object, $info['method']) ){
-				$args[0] = call_user_func_array(array($object, $info['method']), $args );
+				$args[0] = call_user_func_array( [$object, $info['method']], $args );
 			}elseif( $has_script ){
 				self::ExecError(\CMS_NAME . ' Error: Addon hook method doesn\'t exist (1).', $info, 'method');
 			}
@@ -172,7 +160,7 @@ class Caller{
 				&& is_object($GLOBALS[$object])
 				&& method_exists($GLOBALS[$object],$method)
 				){
-				$callback = array($GLOBALS[$object],$method);
+				$callback = [$GLOBALS[$object],$method];
 			}
 		}
 
@@ -228,7 +216,8 @@ class Caller{
 
 		$gadget_info = \gp\tool\Output::WhichGadgets($page->gpLayout);
 
-		foreach($gadget_info as $gpOutCmd => $info){
+		foreach($gadget_info as $gadget_name => $info){
+			$gpOutCmd = $info['gpOutCmd'];
 			if( !isset(self::$gadget_cache[$gpOutCmd]) ){
 				ob_start();
 				self::ExecArea($info);
@@ -283,7 +272,7 @@ class Caller{
 
 		// if the error didn't occur for the exact request and it hasn't happend a lot, allow the code to keep working
 		$fatal_hashes = scandir($hash_dir);
-		if( $fatal_hashes !== false && count($fatal_hashes) < (gp_allowed_fatal_errors + 3) ){
+		if( $fatal_hashes !== false && count($fatal_hashes) < (\gp_allowed_fatal_errors + 3) ){
 			// add 3 for ".", ".." and "index.html" entries
 			return false;
 		}

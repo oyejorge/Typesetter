@@ -401,38 +401,43 @@ namespace gp\tool{
 					trigger_error('gpOutCmd <i>' . $gpOutCmd . '</i> not set');
 					continue;
 				}
-				$info['gpOutCmd'] = $gpOutCmd;
+
 				self::CallOutput($info, $container_id);
 			}
 		}
 
 
-
-		/* static */
 		public static function GetgpOutInfo($gpOutCmd){
 			global $gpOutConf, $config;
 
-			$key = $gpOutCmd = trim($gpOutCmd, ':');
-			$info = false;
-			$arg = '';
-			$pos = mb_strpos($key, ':');
+			$gpOutCmd	= trim($gpOutCmd, ':');
+			$key		= $gpOutCmd;
+			$info		= false;
+			$arg		= '';
+			$pos		= mb_strpos($key, ':');
+
+
 			if( $pos > 0 ){
 				$arg = mb_substr($key, $pos + 1);
 				$key = mb_substr($key, 0, $pos);
 			}
 
-
 			if( isset($gpOutConf[$key]) ){
 				$info = $gpOutConf[$key];
+
 			}elseif( isset($config['gadgets'][$key]) ){
-				$info = $config['gadgets'][$key];
-				$info['is_gadget'] = true;
+				$info				= $config['gadgets'][$key];
+				$info['is_gadget']	= true;
+				$gpOutCmd			= 'Gadget:'.$gpOutCmd;
+
 			}else{
 				return false;
 			}
-			$info['key'] = $key;
-			$info['arg'] = $arg;
-			$info['gpOutCmd'] = $gpOutCmd;
+
+
+			$info['key']		= $key;
+			$info['arg']		= $arg;
+			$info['gpOutCmd']	= $gpOutCmd;
 
 			return $info;
 		}
