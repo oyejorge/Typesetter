@@ -533,11 +533,9 @@ if( !interface_exists('Throwable') ){
  */
 function IncludeScript($file, $include_variation = 'include_once', $globals = array() ){
 
-	$exists = file_exists($file);
-
 	//check to see if it exists
 	$include_variation = str_replace('_if','',$include_variation,$has_if);
-	if( $has_if && !$exists ){
+	if( $has_if && !file_exists($file) ){
 		return;
 	}
 
